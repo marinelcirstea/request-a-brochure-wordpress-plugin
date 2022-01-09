@@ -7,4 +7,5 @@ wp-content/plugins/*
 
 !.gitignore
 !docker-compose.yml
+!readme.md
 !.vscode/
