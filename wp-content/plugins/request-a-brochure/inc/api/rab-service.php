@@ -43,6 +43,26 @@ class RAB_Service{
         ));
         return $res;
     }
+
+    public function update_brochure_status(int $id, string $status){
+        global $wpdb;
+        $bt = $this->brochures_table;
+        $res = $wpdb->update($bt, array(
+            'active' => $status,
+        ), array(
+            'id' => $id,
+        ));
+        return $res;
+    }
+
+    public function delete_brochure(int $id){
+        global $wpdb;
+        $bt = $this->brochures_table;
+        $res = $wpdb->delete($bt, array(
+            'id' => $id,
+        ));
+        return $res;
+    }
     // BROCHURES_END
 
     // BROCHURE_REQUESTS_START

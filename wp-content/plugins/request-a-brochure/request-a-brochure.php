@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Plugin Name: Request a Brochure
  * Plugin Description: Request a Brochure
@@ -44,8 +45,13 @@ register_uninstall_hook(__FILE__, 'rab_uninstall');
  */
 function rab_admin_page()
 {
+    wp_localize_script('rab-js-admin', 'SERVER_DATA', array(
+        "rest_url" => get_rest_url(null, '/rab/v1'),
+    ));
+    wp_enqueue_script('rab-js-admin');
+
     require_once('inc/admin-page.php');
-    new RAB_AdminPage();
+    return rab_admin_page_html();
 }
 
 
@@ -71,6 +77,8 @@ add_action('admin_menu', 'rab_admin_menu_setup');
  */
 function rab_form_shortcode()
 {
+    wp_enqueue_script('rab-js');
+
     return '';
 }
 add_shortcode('rab-form', 'rab_form_shortcode');
@@ -81,6 +89,15 @@ add_shortcode('rab-form', 'rab_form_shortcode');
  */
 function rab_assets_registration()
 {
+    // initialize the api
+    require_once('inc/api/rab-router.php');
+    new RAB_Router();
+
+    // user-facing script
+    wp_register_script('rab-js', plugins_url('assets/js/rab.min.js', __FILE__), array(), '1.0', true);
+    // admin script
+    wp_register_script('rab-js-admin', plugins_url('assets/js/rab-admin.min.js', __FILE__), array(), '1.0', true);
 }
+add_action('init', 'rab_assets_registration');
 
 ?>
