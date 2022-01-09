@@ -27,6 +27,13 @@ class RAB_Service{
         $bt = $this->brochures_table;
         $wpdb->query("DROP TABLE IF EXISTS $bt");
     }
+
+    public function get_all_brochures(){
+        global $wpdb;
+        $bt = $this->brochures_table;
+        $sql = "SELECT * FROM $bt";
+        return $wpdb->get_results($sql);
+    }
     // BROCHURES_END
 
     // BROCHURE_REQUESTS_START
