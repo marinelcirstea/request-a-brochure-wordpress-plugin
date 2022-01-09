@@ -32,10 +32,10 @@ register_activation_hook(__FILE__, 'rab_activate');
  */
 function rab_uninstall()
 {
-    // delete brochures table
-
-    // delete brochure requests table
-
+    require_once('inc/rab-service.php');
+    $rs = new RAB_Service();
+    $rs->drop_brochures_table();
+    $rs->drop_brochure_requests_table();
 }
 register_uninstall_hook(__FILE__, 'rab_uninstall');
 

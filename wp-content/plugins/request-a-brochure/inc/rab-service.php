@@ -21,6 +21,12 @@ class RAB_Service{
             dbDelta($sql);
         }
     }
+
+    public function drop_brochures_table(){
+        global $wpdb;
+        $bt = $this->brochures_table;
+        $wpdb->query("DROP TABLE IF EXISTS $bt");
+    }
     // BROCHURES_END
 
     // BROCHURE_REQUESTS_START
@@ -43,6 +49,12 @@ class RAB_Service{
             require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
             dbDelta( $sql );
         }
+    }
+
+    public function drop_brochure_requests_table(){
+        global $wpdb;
+        $brt = $this->brochure_requests_table;
+        $wpdb->query("DROP TABLE IF EXISTS $brt");
     }
     // BROCHURE_REQUESTS_END
 }
