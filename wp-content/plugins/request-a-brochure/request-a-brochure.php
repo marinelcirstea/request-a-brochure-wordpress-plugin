@@ -44,6 +44,8 @@ register_uninstall_hook(__FILE__, 'rab_uninstall');
  */
 function rab_admin_page()
 {
+    require_once('inc/admin-page.php');
+    new RAB_AdminPage();
 }
 
 
