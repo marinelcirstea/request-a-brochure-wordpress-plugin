@@ -11,12 +11,38 @@ class RAB_Brochure_Controller
     public function get_brochures()
     {
         $brochures = $this->rs->get_all_brochures();
-        return wp_send_json_success($brochures);
+        if (!$brochures) {
+            return new WP_REST_Response([], 404);
+        }
+
+        return new WP_REST_Response($brochures);
     }
 
     public function create_brochure(string $brochure)
     {
         $brochure = $this->rs->create_brochure($brochure);
-        return wp_send_json_success($brochure);
+        if (!$brochure) {
+            return new WP_REST_Response($brochure, 500);
+        }
+
+        return new WP_REST_Response($brochure,200);
+    }
+
+    public function delete_brochure(int $id)
+    {
+        $res = $this->rs->delete_brochure($id);
+        if (!$res) {
+            return new WP_REST_Response($res, 500);
+        }
+        return new WP_REST_Response($res);
+    }
+
+    public function update_brochure_status(int $id, int $status)
+    {
+        $res = $this->rs->update_brochure_status($id, $status);
+        if (!$res) {
+            return new WP_REST_Response($res, 500);
+        }
+        return new WP_REST_Response($res);
     }
 }
