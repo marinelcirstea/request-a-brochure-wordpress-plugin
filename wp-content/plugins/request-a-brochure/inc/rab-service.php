@@ -34,6 +34,15 @@ class RAB_Service{
         $sql = "SELECT * FROM $bt";
         return $wpdb->get_results($sql);
     }
+
+    public function create_brochure(string $brochure){
+        global $wpdb;
+        $bt = $this->brochures_table;
+        $res = $wpdb->insert($bt, array(
+            'brochure' => $brochure,
+        ));
+        return $res;
+    }
     // BROCHURES_END
 
     // BROCHURE_REQUESTS_START
