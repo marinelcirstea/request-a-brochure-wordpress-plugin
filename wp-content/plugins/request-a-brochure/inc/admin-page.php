@@ -4,8 +4,11 @@ function rab_admin_page_html()
     echo '<h1>Request a brochure - Admin</h1>';
 ?>
     <h2>Create a new brochure</h2>
-    <input type="text" name="brochure_name" placeholder="Brochure Name">
-    <button name="add" class="button button-primary" id="button-create-brochure">Create new Brochure</button>
+    <form id='rab-form-create-brochure'>
+        <input type="text" placeholder="Brochure Name">
+        <button type="submit" class="button button-primary">Create new Brochure</button>
+    </form>
+
     <h2>Current brochures</h2>
     <table class="wp-list-table widefat fixed striped">
         <thead>
@@ -17,6 +20,13 @@ function rab_admin_page_html()
         </thead>
         <tbody id="rab-brochures-tbody"></tbody>
     </table>
+    <br>
+    <!-- spinner  -->
+    <div class="rab-spinner">
+        <h1>
+            Loading...
+        </h1>
+    </div>
 <?php
 }
 
