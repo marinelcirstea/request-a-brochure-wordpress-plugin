@@ -19,7 +19,7 @@
  */
 function rab_activate()
 {
-    require_once('inc/rab-service.php');
+    require_once('inc/api/rab-service.php');
     $rs = new RAB_Service();
     $rs->create_brochures_table();
     $rs->create_brochure_request_table();
@@ -33,7 +33,7 @@ register_activation_hook(__FILE__, 'rab_activate');
  */
 function rab_uninstall()
 {
-    require_once('inc/rab-service.php');
+    require_once('inc/api/rab-service.php');
     $rs = new RAB_Service();
     $rs->drop_brochures_table();
     $rs->drop_brochure_requests_table();
