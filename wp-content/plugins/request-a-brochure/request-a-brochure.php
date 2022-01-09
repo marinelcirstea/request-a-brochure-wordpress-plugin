@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Plugin Name: Request a Brochure
  * Plugin Description: Request a Brochure
@@ -19,7 +18,11 @@
  */
 function rab_activate()
 {
+    // create brochures table
+
+    // create brochure requests table
 }
+register_activation_hook(__FILE__, 'rab_activate');
 
 
 /**
@@ -28,29 +31,51 @@ function rab_activate()
  */
 function rab_uninstall()
 {
+    // delete brochures table
+
+    // delete brochure requests table
+
+}
+register_uninstall_hook(__FILE__, 'rab_uninstall');
+
+/**
+ * [ADMIN MENU PAGE]
+ */
+function rab_admin_page()
+{
 }
 
 
 /**
  * [ADMIN MENU SETUP]
- * add the admin menu page
  */
 function rab_admin_menu_setup()
 {
+    add_menu_page(
+        "Request a Brochure",
+        "RAB Plugin",
+        "manage_options",
+        "request-a-brochure",
+        "rab_admin_page",
+        "dashicons-media-spreadsheet",
+        3
+    );
 }
-
+add_action('admin_menu', 'rab_admin_menu_setup');
 
 /**
  * [SHORTCODE]
  */
 function rab_form_shortcode()
 {
+    return '';
 }
+add_shortcode('rab-form', 'rab_form_shortcode');
 
 
 /**
  * [ASSETS REGISTRATION]
-*/
+ */
 function rab_assets_registration()
 {
 }
