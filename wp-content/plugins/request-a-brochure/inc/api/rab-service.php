@@ -13,7 +13,7 @@ class RAB_Service{
             $sql = "CREATE TABLE $bt (
                 id int NOT NULL AUTO_INCREMENT,
                 brochure varchar(255) NOT NULL,
-                active enum('true','false') NOT NULL DEFAULT 'true',
+                active tinyint NOT NULL DEFAULT 1,
                 PRIMARY KEY  (id)
               ) $charset_collate;";
               
@@ -44,7 +44,7 @@ class RAB_Service{
         return $res;
     }
 
-    public function update_brochure_status(int $id, string $status){
+    public function update_brochure_status(int $id, int $status){
         global $wpdb;
         $bt = $this->brochures_table;
         $res = $wpdb->update($bt, array(
