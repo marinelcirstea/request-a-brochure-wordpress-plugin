@@ -1,0 +1,10 @@
+/*
+!wp-content
+wp-content/*
+!wp-content/plugins
+wp-content/plugins/*
+!wp-content/plugins/request-a-brochure
+
+!.gitignore
+!docker-compose.yml
+!.vscode/
