@@ -34,6 +34,13 @@ class RAB_Service{
         $sql = "SELECT * FROM $bt";
         return $wpdb->get_results($sql);
     }
+    
+    public function get_active_brochures(){
+        global $wpdb;
+        $bt = $this->brochures_table;
+        $sql = "SELECT * FROM $bt WHERE active > 0";
+        return $wpdb->get_results($sql);
+    }
 
     public function create_brochure(string $brochure){
         global $wpdb;
@@ -78,6 +85,7 @@ class RAB_Service{
                 name varchar(255) NOT NULL,
                 address varchar(255) NOT NULL,
                 brochure_id int NOT NULL,
+                request_id varchar(255) NOT NULL,
                 status enum('new','dispatched','cancelled') NOT NULL DEFAULT 'new',
                 FOREIGN KEY (brochure_id) REFERENCES $bt(id),
                 PRIMARY KEY  (id)
@@ -91,6 +99,47 @@ class RAB_Service{
         global $wpdb;
         $brt = $this->brochure_requests_table;
         $wpdb->query("DROP TABLE IF EXISTS $brt");
+    }
+
+    public function get_all_brochure_requests(){
+        global $wpdb;
+        $brt = $this->brochure_requests_table;
+        $sql = "SELECT * FROM $brt ORDER BY brochure_id";
+
+        return $wpdb->get_results($sql);
+    }
+
+    public function create_brochure_request(string $name, string $address, array $brochures){
+        global $wpdb;
+        $brt = $this->brochure_requests_table;
+        $request_id = uniqid();
+
+        $sql = "INSERT INTO $brt (name, address, brochure_id, request_id) VALUES ";
+        $values = array();
+        foreach($brochures as $brochure){
+            $values[] = "('$name', '$address', $brochure, '$request_id')";
+        }
+        $sql .= implode(',', $values);
+        $res = $wpdb->query($sql);
+
+        return $res;
+    }
+
+    public function update_brochure_request_status(string $request_id, string $status){
+        global $wpdb;
+        $brt = $this->brochure_requests_table;
+        $sql = "UPDATE $brt SET status = '$status' WHERE request_id = '$request_id'";
+        $res = $wpdb->query($sql);
+        return $res;
+    }
+
+    public function delete_brochure_request(string $request_id){
+        global $wpdb;
+        $brt = $this->brochure_requests_table;
+        $res = $wpdb->delete($brt, array(
+            'request_id' => $request_id,
+        ));
+        return $res;
     }
     // BROCHURE_REQUESTS_END
 }

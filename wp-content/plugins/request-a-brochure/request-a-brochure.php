@@ -77,11 +77,20 @@ add_action('admin_menu', 'rab_admin_menu_setup');
  */
 function rab_form_shortcode()
 {
+    require_once('inc/frontend-form-shortcode.php');
+    wp_localize_script('rab-recaptcha', 'SERVER_DATA', array(
+        "site_key" => SITE_KEY,
+        "rest_url" => get_rest_url(null, '/rab/v1'),
+    ));
+    // wp_localize_script('rab-js', 'SERVER_DATA', array(
+
+    // ));
+    wp_enqueue_script('rab-recaptcha');
     wp_enqueue_script('rab-js');
 
-    return '';
+    return frontend_form_shortcode();
 }
-add_shortcode('rab-form', 'rab_form_shortcode');
+add_shortcode('rab_form', 'rab_form_shortcode');
 
 
 /**
@@ -89,12 +98,17 @@ add_shortcode('rab-form', 'rab_form_shortcode');
  */
 function rab_assets_registration()
 {
+    define('SITE_KEY', '6LdidAMeAAAAAJhvflKyJyJGNCxB8OukL_6SAKgT');
+    define('SECRET_KEY', '6LdidAMeAAAAALmjazDD3e12n2WKvOVJTRWvBPwz');
+    
     // initialize the api
     require_once('inc/api/rab-router.php');
     new RAB_Router();
 
     // user-facing script
-    wp_register_script('rab-js', plugins_url('assets/js/rab.min.js', __FILE__), array(), '1.0', true);
+    wp_register_script('rab-recaptcha', 'https://www.google.com/recaptcha/api.js?render=' . SITE_KEY, array(), false, true);
+    wp_register_script('rab-js', plugins_url('assets/js/rab.min.js', __FILE__), array('rab-recaptcha'), '1.0', true);
+
     // admin script
     wp_register_script('rab-js-admin', plugins_url('assets/js/rab-admin.min.js', __FILE__), array(), '1.0', true);
 }

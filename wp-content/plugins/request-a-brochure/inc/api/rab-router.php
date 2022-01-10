@@ -3,11 +3,16 @@
 class RAB_Router
 {
     private $rbc;
+    private $rbrc;
 
     function __construct()
     {
         require_once('rab-brochure-controller.php');
         $this->rbc = new RAB_Brochure_Controller();
+
+        require_once('rab-brochure-request-controller.php');
+        $this->rbrc = new RAB_Brochure_Request_Controller();
+
         $this->init_rest();
     }
 
@@ -24,7 +29,7 @@ class RAB_Router
                 [
                     'methods' => WP_REST_Server::CREATABLE,
                     'callback' => function ($req) {
-                        $json = json_decode($req->get_json_params(), true);
+                        $json = $req->get_json_params();
                         return $this->rbc->create_brochure($json['brochure']);
                     },
                 ]
@@ -40,10 +45,59 @@ class RAB_Router
                 [
                     'methods' => WP_REST_Server::EDITABLE,
                     'callback' => function ($req) {
-                        $json = json_decode($req->get_json_params(), true);
+                        $json = $req->get_json_params();
                         $params = $req->get_url_params();
 
                         return $this->rbc->update_brochure_status((int)$params['id'], (int)$json['active']);
+                    }
+                ],
+            ],
+
+            // BROCHURE REQUESTS
+            'brochure-recaptcha' => [
+                [
+                    'methods' => WP_REST_Server::CREATABLE,
+                    'callback' => function ($req) {
+                        $json = $req->get_json_params();
+                        // return new WP_REST_Response(['token'=>$json['token']], 200);
+                        return $this->rbrc->verify_recaptcha($json['token']);
+                    },
+                ],
+            ],
+            'brochure-requests' => [
+                [
+                    'methods' => WP_REST_Server::READABLE,
+                    'callback' => function () {
+                        return $this->rbrc->get_brochure_requests();
+                    }
+                ],
+                [
+                    'methods' => WP_REST_Server::CREATABLE,
+                    'callback' => function ($req) {
+                        $json = $req->get_json_params();
+                        $brochures = [];
+                        foreach ($json['brochures'] as $brochure) {
+                            array_push($brochures, (int)$brochure['id']);
+                        }
+                        return $this->rbrc->create_brochure_request($json['name'], $json['address'], $brochures);
+                    },
+                ]
+            ],
+            'brochure-requests/(?P<request_id>[\w]+)' => [
+                [
+                    'methods' => WP_REST_Server::DELETABLE,
+                    'callback' => function ($req) {
+                        $params = $req->get_url_params();
+                        return $this->rbrc->delete_brochure_request($params['request_id']);
+                    }
+                ],
+                [
+                    'methods' => WP_REST_Server::EDITABLE,
+                    'callback' => function ($req) {
+                        $json = $req->get_json_params();
+                        $params = $req->get_url_params();
+
+                        return $this->rbrc->update_brochure_request_status($params['request_id'], $json['status']);
                     }
                 ],
             ]

@@ -27,6 +27,31 @@ function rab_admin_page_html()
             Loading...
         </h1>
     </div>
+
+
+    <div style="display: flex; flex-direction:row;align-items:center; column-gap:25px;">
+        <h2>Brochure requests</h2>
+        <button id="rab-button-refresh-requests" class="button button-primary">Refresh</button>
+    </div>
+    <table class="wp-list-table widefat fixed striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Address</th>
+                <th>Brochures</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="rab-brochure-requests-tbody"></tbody>
+    </table>
+    <br>
+    <!-- spinner  -->
+    <div class="rab-requests-spinner">
+        <h1>
+            Loading...
+        </h1>
+    </div>
 <?php
 }
 
