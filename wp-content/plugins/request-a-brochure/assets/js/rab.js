@@ -2,19 +2,7 @@ const rabForm = document.getElementById("rab-form");
 const chosenBrochures = [];
 const minBrochures = 1;
 const maxBrochures = 3;
-document.addEventListener('DOMContentLoaded',()=>{
-  (async ()=>{
-    const res = await fetch(`${SERVER_DATA.rest_url}/brochure-requests`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Accepts: "application/json",
-      },
-    });
-    const data = await res.json();
-    console.log('data',data);
-  })()
-})
+
 rabForm.querySelectorAll('input[type="checkbox"]').forEach((checkbox) => {
   checkbox.addEventListener("change", (event) => {
     const checkbox = event.target;
