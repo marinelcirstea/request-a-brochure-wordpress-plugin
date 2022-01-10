@@ -7,7 +7,8 @@ document.addEventListener("DOMContentLoaded", () => {
     .getElementById("rab-button-refresh-requests")
     .addEventListener("click", (e) => {
       // disable events
-      disable(e.target)(async () => {
+      disable(e.target);
+      (async () => {
         await rab_generateRequests();
         enable(e.target);
       })();

@@ -100,6 +100,7 @@ function rab_assets_registration()
 {
     define('SITE_KEY', '6LdidAMeAAAAAJhvflKyJyJGNCxB8OukL_6SAKgT');
     define('SECRET_KEY', '6LdidAMeAAAAALmjazDD3e12n2WKvOVJTRWvBPwz');
+    define('IS_ADMIN', current_user_can('manage_options'));
     
     // initialize the api
     require_once('inc/api/rab-router.php');
