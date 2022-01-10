@@ -10,6 +10,9 @@ class RAB_Brochure_Request_Controller
 
     public function get_brochure_requests()
     {
+        if (!is_admin()) {
+            return new WP_REST_Response([], 401);
+        }
         $brochures = $this->rs->get_all_brochure_requests();
         if (!$brochures) {
             return new WP_REST_Response([], 404);
@@ -59,6 +62,9 @@ class RAB_Brochure_Request_Controller
 
     public function delete_brochure_request(string $request_id)
     {
+        if (!is_admin()) {
+            return new WP_REST_Response([], 401);
+        }
         $res = $this->rs->delete_brochure_request($request_id);
         if (!$res) {
             return new WP_REST_Response($res, 500);
@@ -68,6 +74,9 @@ class RAB_Brochure_Request_Controller
 
     public function update_brochure_request_status(string $request_id, string $status)
     {
+        if (!is_admin()) {
+            return new WP_REST_Response([], 401);
+        }
         $res = $this->rs->update_brochure_request_status($request_id, $status);
         if (!$res) {
             return new WP_REST_Response($res, 500);

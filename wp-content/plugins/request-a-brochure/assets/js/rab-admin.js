@@ -7,12 +7,9 @@ document.addEventListener("DOMContentLoaded", () => {
     .getElementById("rab-button-refresh-requests")
     .addEventListener("click", (e) => {
       // disable events
-      e.target.style.opacity = "0.4";
-      e.target.style.pointerEvents = "none";
-      (async () => {
+      disable(e.target)(async () => {
         await rab_generateRequests();
-        e.target.style.opacity = "1";
-        e.target.style.pointerEvents = "auto";
+        enable(e.target);
       })();
     });
 });
@@ -29,15 +26,11 @@ const brochureRequests = `${apiUrl}/brochure-requests`;
  */
 const rab_deleteBrochure = async (_this, id) => {
   const parent = _this.parentNode.parentNode;
-  parent.style.opacity = "0.4";
-  parent.style.pointerEvents = "none";
+  disable(parent);
 
   const success = await rab_captain.delete(`${brochuresUrl}/${id}`);
-  if (!success) {
-    parent.style.opacity = "1";
-    parent.style.pointerEvents = "auto";
-    return;
-  }
+
+  if (!success) return enable(parent);
 
   parent.remove();
 };
@@ -49,15 +42,12 @@ const rab_deleteBrochure = async (_this, id) => {
  */
 const rab_deleteBrochureRequest = async (_this, brochure_id) => {
   const parent = _this.parentNode.parentNode;
-  parent.style.opacity = "0.4";
-  parent.style.pointerEvents = "none";
+  disable(parent);
 
-  const success = await rab_captain.delete(`${brochureRequests}/${brochure_id}`);
-  if (!success) {
-    parent.style.opacity = "1";
-    parent.style.pointerEvents = "auto";
-    return;
-  }
+  const success = await rab_captain.delete(
+    `${brochureRequests}/${brochure_id}`
+  );
+  if (!success) return enable(parent);
 
   parent.remove();
 };
@@ -69,20 +59,16 @@ const rab_deleteBrochureRequest = async (_this, brochure_id) => {
  */
 const rab_changeBrochureStatus = async (_this, id, status) => {
   const parent = _this.parentNode.parentNode;
-  parent.style.opacity = "0.4";
-  parent.style.pointerEvents = "none";
+  disable(parent);
 
   const success = await rab_captain.put(
     `${SERVER_DATA.rest_url}/brochures/${id}`,
     { active: status ? 0 : 1 }
   );
 
-  if (success) {
-    rab_generate();
-  }
+  if (success) rab_generate();
 
-  parent.style.opacity = "1";
-  parent.style.pointerEvents = "auto";
+  enable(parent);
 };
 
 /**
@@ -92,8 +78,7 @@ const rab_changeBrochureStatus = async (_this, id, status) => {
  */
 const rab_changeBrochureRequestStatus = async (_this, request_id, status) => {
   const parent = _this.parentNode.parentNode;
-  parent.style.opacity = "0.4";
-  parent.style.pointerEvents = "none";
+  disable(parent);
 
   const success = await rab_captain.put(`${brochureRequests}/${request_id}`, {
     status,
@@ -103,8 +88,7 @@ const rab_changeBrochureRequestStatus = async (_this, request_id, status) => {
     rab_generateRequests();
   }
 
-  parent.style.opacity = "1";
-  parent.style.pointerEvents = "auto";
+  enable(parent);
 };
 
 /**
@@ -303,4 +287,14 @@ const rab_fetcher = async (url, method, body = {}) => {
   if (!res.ok) return false;
 
   return data;
+};
+
+const disable = (element) => {
+  element.style.opacity = 0.5;
+  element.style.pointerEvents = "none";
+};
+
+const enable = (element) => {
+  element.style.opacity = 1;
+  element.style.pointerEvents = "auto";
 };

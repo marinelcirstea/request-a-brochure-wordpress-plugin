@@ -23,7 +23,6 @@ rabForm.querySelectorAll('input[type="checkbox"]').forEach((checkbox) => {
 
 rabForm.addEventListener("submit", async (e) => {
   e.preventDefault();
-
   const formData = {};
 
   const inputs = rabForm.querySelectorAll("input:not([type='checkbox'])");
@@ -41,20 +40,19 @@ rabForm.addEventListener("submit", async (e) => {
 
   formData.brochures = chosenBrochures;
 
-  const recaptchaResult = await getRecaptchaResult();
-
-  if (recaptchaResult.success && recaptchaResult.score > 0.5) {
-    return handleSubmit(formData);
-  } else {
-    return alert("reCaptcha failed");
-  }
+  return handleSubmit(formData);
 });
 
 const handleSubmit = async (formData) => {
-  const url = `${SERVER_DATA.rest_url}/brochure-requests`;
-  formData.action = "CREATE_BROCHURE_REQUEST";
+  const form = rabForm.parentElement;
+  disable(form);
 
-  const res = await fetch(url, {
+  const recaptchaResult = await getRecaptchaResult();
+  if (!recaptchaResult.success || recaptchaResult.score < 0.5) {
+    return alert("reCAPTCHA failed.");
+  }
+
+  const res = await fetch(`${SERVER_DATA.rest_url}/brochure-requests`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -63,16 +61,16 @@ const handleSubmit = async (formData) => {
     body: JSON.stringify(formData),
   });
 
-  const data = await data.json();
+  const data = await res.json();
 
   if (!res.ok) {
     if (data.message) return alert(data.message);
 
+    enable(form);
     return alert("Something went wrong on our side.");
   }
 
   // replace the form with success message
-  const form = rabForm.parentElement;
   const success = document.createElement("div");
   success.classList.add("rab-success");
   success.innerHTML = `
@@ -96,7 +94,15 @@ const getRecaptchaResult = async () => {
   });
   const data = await res.json();
 
-  console.log("recaptcha data:", data);
-
   return data;
+};
+
+const disable = (element) => {
+  element.style.opacity = 0.5;
+  element.style.pointerEvents = "none";
+};
+
+const enable = (element) => {
+  element.style.opacity = 1;
+  element.style.pointerEvents = "auto";
 };
