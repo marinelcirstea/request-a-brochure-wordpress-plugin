@@ -113,6 +113,9 @@ class RAB_Service{
         global $wpdb;
         $brt = $this->brochure_requests_table;
         $request_id = uniqid();
+        $name = sanitize_text_field($name);
+        $address = sanitize_text_field($address);
+        $brochures = rest_sanitize_array($brochures);
 
         $sql = "INSERT INTO $brt (name, address, brochure_id, request_id) VALUES ";
         $values = array();
@@ -124,7 +127,7 @@ class RAB_Service{
 
         return $res;
     }
-
+    
     public function update_brochure_request_status(string $request_id, string $status){
         global $wpdb;
         $brt = $this->brochure_requests_table;
@@ -143,5 +146,3 @@ class RAB_Service{
     }
     // BROCHURE_REQUESTS_END
 }
-
-?>
