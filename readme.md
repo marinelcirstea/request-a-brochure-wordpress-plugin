@@ -46,13 +46,16 @@ Shortcode: [rab_form]
 
 ##### Admin
 ```
-All API routes except for /brochure-requests
+All API routes except for /brochure-requests [POST] which is
+available to anyone
 ```
 
 ##### Anyone
 ```
 /brochure-requests [POST]
-/brochures [GET]
+
+The active brochures are injected from PHP, visitors can't make
+requests to /brochures [GET]
 ```
 
 ### Structure
