@@ -9,3 +9,4 @@ wp-content/plugins/*
 !docker-compose.yml
 !readme.md
 !.vscode/
+!.gcloudignore
