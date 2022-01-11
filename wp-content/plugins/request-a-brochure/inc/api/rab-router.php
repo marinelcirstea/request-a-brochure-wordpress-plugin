@@ -75,11 +75,8 @@ class RAB_Router
                     'methods' => WP_REST_Server::CREATABLE,
                     'callback' => function ($req) {
                         $json = $req->get_json_params();
-                        $brochures = [];
-                        foreach ($json['brochures'] as $brochure) {
-                            array_push($brochures, (int)$brochure['id']);
-                        }
-                        return $this->rbrc->create_brochure_request($json['name'], $json['address'], $brochures);
+
+                        return $this->rbrc->create_brochure_request($json['name'], $json['email'], $json['brochures']);
                     },
                 ]
             ],

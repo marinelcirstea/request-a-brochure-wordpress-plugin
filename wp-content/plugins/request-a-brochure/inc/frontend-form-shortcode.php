@@ -17,9 +17,9 @@ function frontend_form_shortcode()
             <br>
             <input type="text" name="name" placeholder="Enter your name" />
             <br>
-            <label for="address">Your address</label>
+            <label for="email">Your email address</label>
             <br>
-            <input type="text" name="address" placeholder="Enter your address" />
+            <input type="text" name="email" placeholder="Enter your email address" />
             <br>
             <p>Brochures:</p>
             <br>

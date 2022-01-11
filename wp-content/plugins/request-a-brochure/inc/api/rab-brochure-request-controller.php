@@ -49,16 +49,27 @@ class RAB_Brochure_Request_Controller
         return new WP_REST_Response($json_response, 200);
     }
 
-    public function create_brochure_request(string $name, string $address, array $brochures)
+    public function create_brochure_request(string $name, string $email, array $brochures)
     {
-        $request = $this->rs->create_brochure_request($name, $address, $brochures);
-        if (!$request) {
-            return new WP_REST_Response([
-                'message' => 'Request already exists'
-            ], 400);
+        if (!$name){
+            return new WP_REST_Response(['message'=>'Name is required!'], 400);
+        }
+        if (!$email){
+            return new WP_REST_Response(['message'=>'Email is required!'], 400);
+        }
+        if (!$brochures[0]){
+            return new WP_REST_Response(['message'=>'Brochures are required!'], 400);
         }
 
-        return new WP_REST_Response($request, 200);
+        $r = $this->rs->create_brochure_request($name, $email, $brochures);
+
+        if ($r === 0 || !$r) {
+            return new WP_REST_Response([
+                'message' => 'Something went wrong. Please try again.'
+            ], 500);
+        }
+
+        return new WP_REST_Response($r, 200);
     }
 
     public function delete_brochure_request(string $request_id)
@@ -79,7 +90,7 @@ class RAB_Brochure_Request_Controller
         if (!IS_ADMIN) {
             return new WP_REST_Response([], 403);
         }
-        
+
         $res = $this->rs->update_brochure_request_status($request_id, $status);
         if (!$res) {
             return new WP_REST_Response($res, 500);
