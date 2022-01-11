@@ -51,7 +51,8 @@ All API routes except for /brochure-requests
 
 ##### Anyone
 ```
-Only /brochure-requests
+/brochure-requests [POST]
+/brochures [GET]
 ```
 
 ### Structure
