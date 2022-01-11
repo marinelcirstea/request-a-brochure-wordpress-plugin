@@ -53,3 +53,29 @@ All API routes except for /brochure-requests
 ```
 Only /brochure-requests
 ```
+
+### Structure
+```
+request-a-brochure.php => Main entry file
+```
+```
+assets => Admin and user-facing scripts
+```
+```
+inc/frontend-form-shortcode.php => User-facing front-end
+```
+```
+inc/admin-page => Admin facing front-end
+```
+```
+inc/api/rab-router.php => Rest API routes
+```
+```
+inc/api/rab-brochure-controller.php => Brochures controller
+```
+```
+inc/api/rab-brochure-request-controller.php => Brochure requests controller
+```
+```
+inc/api/rab-service.php => Brochure service for working with the database
+```
