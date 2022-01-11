@@ -5,8 +5,7 @@ function frontend_form_shortcode()
     require_once('api/rab-service.php');
     $rs = new RAB_Service();
     $brochures = $rs->get_active_brochures();
-?>
-    <div>
+    $html = '<div>
         <style>
             .error-message {
                 color: red;
@@ -22,24 +21,17 @@ function frontend_form_shortcode()
             <input type="text" name="email" placeholder="Enter your email address" />
             <br>
             <p>Brochures:</p>
-            <br>
-            <?php
+            <br>';
             foreach ($brochures as $brochure) {
-            ?>
-                <div>
-                    <input type="checkbox" name="<?php echo $brochure->brochure; ?>" data-brochure_id="<?php echo $brochure->id; ?>">
-                    <label for="<?php echo $brochure->brochure; ?>"><?php echo $brochure->brochure; ?></label>
-                </div>
-            <?php
+                $html.='<div>
+                    <input type="checkbox" name="'. $brochure->brochure.'" data-brochure_id="'.$brochure->id.'">
+                    <label for="'.$brochure->brochure.'">'.$brochure->brochure.'</label>
+                </div>';
             }
-            ?>
-            <br>
+            $html.='<br>
             <br>
             <button type="submit">Request a brochure</button>
         </form>
-    </div>
-<?php
-    return '';
+    </div>';
+    return $html;
 }
-
-?>
