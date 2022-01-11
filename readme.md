@@ -77,5 +77,6 @@ inc/api/rab-brochure-controller.php => Brochures controller
 inc/api/rab-brochure-request-controller.php => Brochure requests controller
 ```
 ```
-inc/api/rab-service.php => Brochure service for working with the database
+inc/api/rab-service.php => Brochure + Brochure requests service
+for working with the database
 ```
